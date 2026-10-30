@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Mapbox Storytelling</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/mapbox/assembly/publisher-staging/src/svgs/mapbox.svg">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/intersection-observer@0.12.0/intersection-observer.js"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+            font-family: 'Avenir', sans-serif;;
+        }
+        :root {
+            --red: #6b1a1f;       /* solid dark red panels */
+            --red-deep: #4a1014;
+            --cream: #fbeeea;     /* text on red */
+            --hl: #f4d9a6;        /* highlighter */
+        }
+        a, a:hover, a:visited {
+            color: #ffc9b9;
+        }
+        #map {
+            top:0;
+            height: 100vh;
+            width:100vw;
+            position: fixed;
+        }
+        .map-container {
+            display: block; /* Adjust as needed based on your initial setup */
+        }
+        #header {
+            margin: auto;
+            width: 100%;
+            position: relative;
+            z-index: 5;
+        }
+        #header h1, #header h2, #header p {
+            margin: 0;
+            padding: 2vh 2vw;
+            text-align: center;
+        }
+        #exposition {
+            margin: auto;
+            width: 100%;
+            position: relative;
+            background-color: var(--red);
+            color: var(--cream);
+            z-index: 5;
+        }
+        #exposition p{
+            margin: 0;
+            padding: 2vh 2vw;
+            text-align: center;
+        }
+        #features {
+            padding-top: 10vh;
+            padding-bottom: 10vh;
+        }
+        .hidden {
+            visibility: hidden;
+        }
+        .centered {
+            width: 50vw;
+            margin: 0 auto;
+        }
+        .lefty {
+            width: 33vw;
+            margin-left: 5vw;
+        }
+        .righty {
+            width: 33vw;
+            margin-left: 62vw;
+        }
+        .fully {
+            width: 100%;
+            margin: auto;
+        }
+        .light {
+            color: var(--cream);
+            background-color: var(--red);
+        }
+        .dark {
+            color: var(--cream);
+            background-color: var(--red-deep);
+        }
+        .step {
+            padding-bottom: 50vh;
+            /* margin-bottom: 10vh; */
+            opacity: 0.35;
+            transition: opacity 0.4s;
+        }
+        .step.active {
+            opacity: 1;
+        }
+        /* words highlighted from the protests: the highlighter sweeps in when the chapter is active */
+        mark.hl {
+            color: inherit;
+            padding: 0 3px;
+            background-color: transparent;
+            background-image: linear-gradient(var(--hl), var(--hl));
+            background-repeat: no-repeat;
+            background-position: 0 100%;
+            background-size: 0% 100%;
+            transition: background-size 1s ease 0.3s, color 0.4s ease 0.3s;
+            -webkit-box-decoration-break: clone;
+            box-decoration-break: clone;
+        }
+        .step.active mark.hl {
+            background-size: 100% 100%;
+            color: var(--red-deep);
+        }
+        mark.hl[data-place] { cursor: pointer; }
+        mark.hl[data-place]:hover { text-decoration: underline; }
+
+        .step div {
+            padding:  25px 50px;
+            line-height: 25px;
+            font-size: 13px;
+        }
+
+        .step img {
+            width: 100%;
+        }
+        /* Marker tweaks */
+
+        .mapboxgl-popup-content {
+            font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+            padding: 0;
+            width: 260px;
+            color: var(--cream);
+            background-color: var(--red);
+            /* Add box shadow for the outer glow effect */
+            box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.5);
+            border-radius: 5px; /* Optional: Add border-radius for rounded corners */
+        }
+
+        .popup-text {
+            margin: 0;
+            padding: 10px;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 18px;
+            color: var(--cream);
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .popup-text p { margin: 6px 0 0; }
+        .chapter-button { cursor: pointer; }
+        #footer {
+            position: relative;
+            z-index: 5;
+            padding: 2vh 5vw;
+            font-size: 12px;
+            line-height: 18px;
+            text-align: center;
+        }
+
+
+        .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+        margin-top: 15px;
+        }
+        .mapboxgl-popup-close-button { color: var(--cream); font-size: 18px; }
+        .mapboxgl-popup-close-button:hover { background: transparent; color: var(--hl); }
+        .mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip { border-bottom-color: var(--red); }
+        .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip { border-top-color: var(--red); }
+        .mapboxgl-popup-anchor-left .mapboxgl-popup-tip { border-right-color: var(--red); }
+        .mapboxgl-popup-anchor-right .mapboxgl-popup-tip { border-left-color: var(--red); }
+        #debugbox {
+            position: fixed; top: 8px; left: 8px; z-index: 1000; width: 340px; height: 240px;
+            font: 11px/14px monospace; background: #fff; color: #000; border: 2px solid var(--red);
+        }
+
+        @media (max-width: 750px) {
+            .centered, .lefty, .righty, .fully {
+                width: 90vw;
+                margin: 0 auto;
+            }
+        }
+
+        /* Fix issue on mobile browser where scroll breaks  */
+        .mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan,
+        .mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan .mapboxgl-canvas {
+            touch-action: unset;
+        }
+
+        </style>
+</head>
+<body>
+
+<!-- Section 3: Map -->
+<div id="map"></div>
+<div id="story"></div>
+
+<script src="./config.js"></script>
+<script>
+var initLoad = true;
+var layerTypes = {
+    'fill': ['fill-opacity'],
+    'line': ['line-opacity'],
+    'circle': ['circle-opacity', 'circle-stroke-opacity'],
+    'symbol': ['icon-opacity', 'text-opacity'],
+    'raster': ['raster-opacity'],
+    'fill-extrusion': ['fill-extrusion-opacity'],
+    'heatmap': ['heatmap-opacity']
+}
+
+var alignments = {
+    'left': 'lefty',
+    'center': 'centered',
+    'right': 'righty',
+    'full': 'fully'
+}
+
+function getLayerPaintType(layer) {
+    var layerType = map.getLayer(layer).type;
+    return layerTypes[layerType];
+}
+
+function setLayerOpacity(layer) {
+    var paintProps = getLayerPaintType(layer.layer);
+    paintProps.forEach(function(prop) {
+        var options = {};
+        if (layer.duration) {
+            var transitionProp = prop + "-transition";
+            options = { "duration": layer.duration };
+            map.setPaintProperty(layer.layer, transitionProp, options);
+        }
+        map.setPaintProperty(layer.layer, prop, layer.opacity, options);
+    });
+}
+
+
+var story = document.getElementById('story');
+var features = document.createElement('div');
+features.setAttribute('id', 'features');
+
+var header = document.createElement('div');
+var exposition = document.createElement('div');
+
+
+if (config.title) {
+    var titleText = document.createElement('h1');
+    titleText.innerText = config.title;
+    header.appendChild(titleText);
+}
+
+if (config.subtitle) {
+    var subtitleText = document.createElement('h2');
+    subtitleText.innerText = config.subtitle;
+    header.appendChild(subtitleText);
+}
+
+if (config.byline) {
+    var bylineText = document.createElement('p');
+    bylineText.innerHTML = config.byline;
+    header.appendChild(bylineText);
+}
+
+if (config.introduction) {
+    var introText = document.createElement('p');
+    introText.innerText = config.introduction;
+    exposition.appendChild(introText);
+}
+
+if (header.innerText.length > 0) {
+    header.classList.add(config.theme);
+    header.setAttribute('id', 'header');
+    story.appendChild(header);
+}
+
+if (exposition.innerText.length > 0) {
+    exposition.classList.add(config.theme);
+    exposition.setAttribute('id', 'exposition');
+    story.appendChild(exposition);
+}
+
+config.chapters.forEach((record, idx) => {
+    var container = document.createElement('div');
+    var chapter = document.createElement('div');
+
+    if (record.title) {
+        var title = document.createElement('h3');
+        title.innerText = record.title;
+        chapter.appendChild(title);
+    }
+
+    // if (record.image) {
+    //     var image = new Image();
+    //     image.src = record.image;
+    //     chapter.appendChild(image);
+    // }
+
+    if (record.description) {
+        var desc = document.createElement('div');
+        desc.innerHTML = record.description;
+        chapter.appendChild(desc);
+    }
+
+    container.setAttribute('id', record.id);
+    container.classList.add('step');
+    if (idx === 0) {
+        container.classList.add('active');
+    }
+
+    chapter.classList.add(config.theme);
+    container.appendChild(chapter);
+    container.classList.add(alignments[record.alignment] || 'centered');
+    if (record.hidden) {
+        container.classList.add('hidden');
+    }
+    features.appendChild(container);
+    
+    // Only chapters with mapped protest locations get a button
+    if (record.places && record.places.length > 0) {
+        const chapterButtonDiv = document.createElement('div');
+        const chapterButton = document.createElement('button');
+        chapterButton.innerText = 'Show protest locations';
+        chapterButton.classList.add('chapter-button');
+
+        chapterButtonDiv.appendChild(chapterButton);
+        container.appendChild(chapterButtonDiv);
+
+        chapterButton.addEventListener('click', () => {
+            displayMarkersForChapter(record);
+        });
+    }
+});
+
+
+
+story.appendChild(features);
+
+if (config.footer) {
+    var footer = document.createElement('div');
+    footer.setAttribute('id', 'footer');
+    footer.classList.add(config.theme);
+    footer.innerHTML = config.footer;
+    story.appendChild(footer);
+}
+
+mapboxgl.accessToken = config.accessToken;
+
+const transformRequest = (url) => {
+    const hasQuery = url.indexOf("?") !== -1;
+    const suffix = hasQuery ? "&pluginName=scrollytellingV2" : "?pluginName=scrollytellingV2";
+    return {
+      url: url + suffix
+    }
+}
+
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: config.style,
+    center: config.chapters[0].location.center,
+    zoom: config.chapters[0].location.zoom,
+    bearing: config.chapters[0].location.bearing,
+    pitch: config.chapters[0].location.pitch,
+    interactive: true,
+    transformRequest: transformRequest,
+    projection: config.projection
+});
+
+if (config.showMarkers) {
+    var marker = new mapboxgl.Marker({ color: config.markerColor });
+    marker.setLngLat(config.chapters[0].location.center).addTo(map);
+}
+
+// The story is scroll-driven, so turn off direct map navigation
+// (but keep click events working for the popups)
+['scrollZoom', 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate'].forEach(function(h) {
+    if (map[h]) map[h].disable();
+});
+
+// instantiate the scrollama
+var scroller = scrollama();
+
+const placesData = {
+    'type': 'FeatureCollection',
+    'features': [
+    {
+        "type": "Feature",
+        "id": 1,
+        "properties": {
+            "description": "<strong>Sidon, August 1987</strong><p><a href=\"https://www.nytimes.com/1987/08/30/world/lebanon-food-protests-spread.html\" target=\"_blank\">Marchers</a>  in the southern town of Sidon today chanted, We are hungry! We want to eat! The protests were peaceful, and shops remained closed for the day</p>",
+            "icon": "border-dot-13"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                35.37106,
+                33.554709
+            ]
+        }
+    },
+    {
+        "type": "Feature",
+        "id": 2,
+        "properties": {
+            "description": "<strong>Rasheiye, August 1987</strong><p><a href=\"https://www.nytimes.com/1987/08/30/world/lebanon-food-protests-spread.html\" target=\"_blank\">The police reported</a> protest marches in Rasheiye, but said the demonstrators dispersed peacefully.</p>",
+            "icon": "border-dot-13"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                35.83333,
+                33.507664636
+            ]
+        }
+    },
+    {
+        "type": "Feature",
+        "id": 3,
+        "properties": {
+            "description": "<strong>West Beirut, August 1987</strong><p><a href=\"https://www.nytimes.com/1987/08/30/world/lebanon-food-protests-spread.html\" target=\"_blank\">Protests</a> over food prices spread today from the capital to other Lebanese towns as steel-helmeted Syrian soldiers with heavy machine guns continued to patrol the main shopping centers in mainly Moslem West Beirut to prevent further disturbances.</p>",
+            "icon": "border-dot-13"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                35.481899,
+                33.897288
+            ]
+        }
+    },
+    {
+        "type": "Feature",
+        "id": 4,
+        "properties": {
+            "description": "<strong>The Highway to Beirut Airport, August 1987</strong><p><a href=\"https://www.latimes.com/archives/la-xpm-1987-08-29-mn-1369-story.html\" target=\"_blank\">Men carrying automatic rifles</a> and rocket-propelled grenades joined other rioters in setting tires ablaze on the highway to Beirut airport, blocking traffic for four hours. Holding their weapons high, the gunmen shouted: Death to America! Death to France! Death to Israel! Some rioters waved posters of Shia militia chieftain Nabih Berri and the Ayatollah Ruhollah Khomeini, Iran’s revolutionary patriarch. They stoned the few motorists who braved the blazing barriers on the airport highway.</p>",
+            "icon": "border-dot-13"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                35.494157,
+                33.864615
+            ]
+        }
+    },
+    {
+        "type": "Feature",
+        "id": 5,
+        "properties": {
+            "description": "<strong>Corniche Mazraa, August 1987</strong><p><a href=\"https://www.latimes.com/archives/la-xpm-1987-08-29-mn-1369-story.html\" target=\"_blank\">Protestors</a> marched down West Beirut’s Corniche Mazraa commercial thoroughfare chanting slogans. “We want food! We want medicine! We want fuel!” they shouted. Heavily armed Syrian soldiers surrounded the marchers as they chanted: “Down with the dollar! Down with imperialism!”</p>",
+            "icon": "border-dot-13"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                35.47958,
+                33.88347
+            ]
+        }
+    },
+    {
+        "type": "Feature",
+        "id": 6,
+        "properties": {
+            "description": "<strong>West Beirut, August 1987</strong><p><a href=\"https://www.nytimes.com/1987/08/30/world/lebanon-food-protests-spread.html\" target=\"_blank\">In West Beirut,</a>\"In Muslim West Beirut, Syrian commandos fired automatic rifles in the air to disperse about 30 rioters who tried to block traffic with burning tires. Shops, banks and restaurants on the avenue closed for the day. Money changers throughout West Beirut shut their booths to escape the wrath of rioters, who smashed the glass fronts of several money exchanges Thursday in the Hamra district.\"</p>",
+            "icon": "border-dot-13"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                35.4835,
+                33.8955
+            ]
+        }
+    }
+]
+};
+
+function removePopups() {
+    const popUps = document.getElementsByClassName('mapboxgl-popup');
+    while (popUps[0]) {
+        popUps[0].remove();
+    }
+}
+
+// Show popups for the places listed in a chapter's `places` array (feature ids)
+function displayMarkersForChapter(chapter) {
+    removePopups();
+    placesData.features
+        .filter(place => (chapter.places || []).includes(place.id))
+        .forEach(createPopUp);
+}
+
+function createPopUp(currentFeature) {
+    new mapboxgl.Popup({ closeOnClick: true, maxWidth: '260px' })
+        .setLngLat(currentFeature.geometry.coordinates.slice())
+        .setHTML('<div class="popup-text">' + currentFeature.properties.description + '</div>')
+        .addTo(map);
+}
+
+// ---- time-scrolling: each chapter lists the dot ids ("places") that belong to it ----
+var activePlaces = config.chapters[0].places || [];
+function placesFilter(ids) { return ['in', ['id'], ['literal', ids]]; }
+function applyPlacesFilter() {
+    if (map.getLayer('places')) map.setFilter('places', placesFilter(activePlaces));
+}
+
+// ---- click handling: any feature on the map (dots, trees, rings from the Mapbox style) ----
+var DEBUG = /[?&]debug/.test(location.search);
+function featurePopupHTML(props) {
+    if (props.description) return props.description;
+    var title = props.title || props.name || props.Name || '';
+    var lines = Object.keys(props).filter(k => props[k] !== null && props[k] !== '' && k !== 'title' && k !== 'name' && k !== 'Name')
+        .map(k => '<br><strong>' + k + ':</strong> ' + props[k]);
+    return (title ? '<strong>' + title + '</strong>' : '') + lines.join('');
+}
+map.on('click', (e) => {
+    // pad the click so thin rings and small trees are easy to hit
+    var pad = 10;
+    var box = [[e.point.x - pad, e.point.y - pad], [e.point.x + pad, e.point.y + pad]];
+    if (DEBUG) {
+        var all = map.queryRenderedFeatures(box).filter(f => !/^(road|bridge|tunnel|land|water|admin|building|settlement|state|country|continent|waterway|natural|poi|transit|airport|ferry|aeroway|turning|golf|pitch|park|national|hillshade|contour|background)/.test(f.layer.id));
+        var txt = all.slice(0, 6).map(f => 'LAYER: ' + f.layer.id + ' | SOURCE-LAYER: ' + (f.sourceLayer || '') + '\n' + JSON.stringify(f.properties)).join('\n\n');
+        console.log(txt);
+        new mapboxgl.Popup({ maxWidth: '340px' }).setLngLat(e.lngLat)
+            .setHTML('<pre style="white-space:pre-wrap;font:11px/14px monospace;padding:8px;margin:0;max-height:220px;overflow:auto">' + (txt || 'no custom features here').replace(/</g, '&lt;') + '</pre>').addTo(map);
+        return;
+    }
+    var layers = ['places'].concat(config.clickableLayers || []).filter(id => map.getLayer(id));
+    var hits = map.queryRenderedFeatures(box, { layers: layers });
+    if (!hits.length) return;
+    removePopups();
+    var f = hits[0];
+    if (f.layer.id === 'places') { createPopUp(f); return; }
+    new mapboxgl.Popup({ closeOnClick: true, maxWidth: '260px' })
+        .setLngLat(e.lngLat)
+        .setHTML('<div class="popup-text">' + featurePopupHTML(f.properties) + '</div>')
+        .addTo(map);
+});
+
+// ---- highlighted words in the story: click one to jump to its protest ----
+document.addEventListener('click', function(ev) {
+    var m = ev.target.closest && ev.target.closest('mark.hl[data-place]');
+    if (!m) return;
+    var f = placesData.features.find(x => x.id === Number(m.getAttribute('data-place')));
+    if (!f) return;
+    removePopups();
+    map.flyTo({ center: f.geometry.coordinates, zoom: 11.5, speed: 0.8 });
+    map.once('moveend', function() { createPopUp(f); });
+});
+
+// ---- debug helper: add ?debug to the URL to list the custom layers in your Mapbox style ----
+map.once('idle', function() {
+    if (!DEBUG) return;
+    var skip = ['landuse','landuse_overlay','landcover','waterway','water','aeroway','structure','road','admin','building','natural_label','poi_label','airport_label','transit_stop_label','place_label','housenum_label','motorway_junction','hillshade','contour'];
+    var lines = map.getStyle().layers
+        .filter(l => !(l['source-layer'] && skip.indexOf(l['source-layer']) !== -1) && l.type !== 'background' && l.id !== 'places' && l.type !== 'sky')
+        .map(l => l.id + ' | ' + l.type + ' | ' + l.source + (l['source-layer'] ? ' | ' + l['source-layer'] : ''));
+    var box = document.createElement('textarea');
+    box.id = 'debugbox';
+    box.value = 'CUSTOM LAYERS IN STYLE (copy all of this):\n' + lines.join('\n');
+    document.body.appendChild(box);
+});
+
+map.on("load", function() {
+    map.addSource('places', { 'type': 'geojson', 'data': placesData });
+        // Lebanese cedar icon, drawn as an inline SVG (no extra file needed)
+        var cedarSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">' +
+            '<rect x="28" y="40" width="8" height="19" rx="2" fill="#4a1014" stroke="#fbeeea" stroke-width="1.5"/>' +
+            '<ellipse cx="32" cy="42" rx="26" ry="7" fill="#6b1a1f" stroke="#fbeeea" stroke-width="2"/>' +
+            '<ellipse cx="32" cy="30" rx="20" ry="7" fill="#6b1a1f" stroke="#fbeeea" stroke-width="2"/>' +
+            '<ellipse cx="32" cy="19" rx="13" ry="6" fill="#6b1a1f" stroke="#fbeeea" stroke-width="2"/>' +
+            '<ellipse cx="32" cy="10" rx="7" ry="4.5" fill="#6b1a1f" stroke="#fbeeea" stroke-width="2"/>' +
+            '</svg>';
+        var cedarImg = new Image(64, 64);
+        cedarImg.onload = function() {
+            if (!map.hasImage('cedar')) map.addImage('cedar', cedarImg, { pixelRatio: 2 });
+            map.addLayer({
+                'id': 'places',
+                'type': 'symbol',
+                'source': 'places',
+                'layout': {
+                    'icon-image': 'cedar',
+                    'icon-size': 1,
+                    'icon-allow-overlap': true
+                },
+                'filter': placesFilter(activePlaces)
+            });
+            map.on('mouseenter', 'places', () => { map.getCanvas().style.cursor = 'pointer'; });
+            map.on('mouseleave', 'places', () => { map.getCanvas().style.cursor = ''; });
+        };
+        cedarImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(cedarSVG);
+
+    // setup the instance, pass callback functions
+    scroller
+    .setup({
+        step: '.step',
+        offset: 0.5,
+        progress: true
+    })
+    .onStepEnter(async response => {
+        var current_chapter = config.chapters.findIndex(chap => chap.id === response.element.id);
+        var chapter = config.chapters[current_chapter];
+        
+        response.element.classList.add('active');
+        map[chapter.mapAnimation || 'flyTo'](chapter.location);
+
+        // time-scrolling: show only the protests that belong to this chapter
+        activePlaces = chapter.places || [];
+        applyPlacesFilter();
+
+
+        if (chapter.onChapterEnter.length > 0) {
+            chapter.onChapterEnter.forEach(setLayerOpacity);
+        }
+        if (chapter.callback) {
+            window[chapter.callback]();
+        }
+        if (chapter.rotateAnimation) {
+            map.once('moveend', () => {
+                const rotateNumber = map.getBearing();
+                map.rotateTo(rotateNumber + 180, {
+                    duration: 30000, easing: function (t) {
+                        return t;
+                    }
+                });
+            });
+        }
+        if (config.auto) {
+             var next_chapter = (current_chapter + 1) % config.chapters.length;
+             map.once('moveend', () => {
+                 document.querySelectorAll('[data-scrollama-index="' + next_chapter.toString() + '"]')[0].scrollIntoView();
+             });
+        }
+    })
+    .onStepExit(response => {
+        const popUps = document.getElementsByClassName('mapboxgl-popup');
+        while (popUps[0]) {
+            popUps[0].remove();
+        }
+        var chapter = config.chapters.find(chap => chap.id === response.element.id);
+        response.element.classList.remove('active');
+        if (chapter.onChapterExit.length > 0) {
+            chapter.onChapterExit.forEach(setLayerOpacity);
+        }
+    });
+
+
+    if (config.auto) {
+        document.querySelectorAll('[data-scrollama-index="0"]')[0].scrollIntoView();
+    }
+});
+
+
+// setup resize event
+window.addEventListener('resize', scroller.resize);
+
+</script>
+
+</body>
+</html>

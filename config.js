@@ -10,11 +10,11 @@ var config = {
     theme: 'light',
     use3dTerrain: false, //set true for enabling 3D maps.
     auto: false,
-    title: 'Down with the Dollar!',
+    title: 'Bread, Pounds and Protest',
     subtitle: 'Mapping economic protests in Lebanon since 1987',
     byline: 'Madeleine Gallop &middot; January 23, 2024',
     introduction: "While religious divisions and sectarian tensions have historically fueled conflict in Lebanon, economic challenges and the government's inability to address them have emerged as the predominant threats to the well-being of Lebanon’s people since the conclusion of the Lebanese Civil War (1975-1990).\n\nA devastating economic crash in 1987 profoundly impacted Lebanon’s population. This downturn, marked by bread riots triggered by the government's inability to subsidize rising wheat costs amid global price hikes, has led to persistent economic challenges. Lebanese people have experienced lasting hardship regardless of their religious affiliations, and have joined together through public demonstrations and strikes. But despite the populace's united calls for change, religious divisions continue to constrain the government. In 2019, when economic conditions in Lebanon once again deteriorated, a new wave of protests, hunger, and calls for change broke across the country. Lebanon's political class must redirect its focus towards addressing the economic well-being of its people.",
-    githubUrl: 'https://github.com/YOUR-USERNAME/YOUR-REPO', //TODO: paste your repo link here
+    githubUrl: 'https://github.com/madgallop/lebanon-protest-map', 
     chapters: [
         {
             id: 'emerging-from-civil-war',

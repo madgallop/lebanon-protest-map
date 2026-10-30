@@ -444,6 +444,366 @@ var PROTESTS = [
   ]
  },
  {
+  "id": "20181217",
+  "kind": "point",
+  "date": "2018-12-17",
+  "title": "Lebanese decry economic situation — Protests overshadow Cabinet deadlock",
+  "source": "Daily Star (Lebanon)",
+  "text": "Thousands of demonstrators marched from Hamra to Downtown's Riad al-Solh Square in Beirut to protest against the Lebanese government's policies and the country's dire economic situation. The protesters, organized by the Lebanese Communist Party, condemned corruption and called for saving the country from collapse. The party criticized the confessional system of governance, accusing the ruling class of impoverishing the public and threatening their livelihoods. They also criticized the 7-month delay in forming a government, calling for protests in front of the residences of President Michel Aoun, Speaker Nabih Berri, and Prime Minister-designate Saad Hariri. Protestors critiqued various longstanding issues, including the economic crisis, water, electricity, and unemployment. The demonstrations, marked by scuffles with security forces, prompted the Army to issue a statement urging peaceful protests and warning against property vandalism.",
+  "locs": [
+   [
+    35.5085,
+    33.8958
+   ]
+  ]
+ },
+ {
+  "id": "20190113",
+  "kind": "point",
+  "date": "2019-01-13",
+  "title": "Hundreds across country protest against graft, pollution, costs",
+  "source": "Daily Star (Lebanon)",
+  "text": "Hundreds of protesters in Lebanon demonstrated across the country, expressing discontent with corruption and deteriorating living conditions. The protests were organized by various groups, including the Lebanese Communist Party, Popular Nasserite Organization, Beirut Madinati, Li Haqqi, and You Stink. The protesters raised concerns about issues such as arbitrary layoffs, outstanding wages, healthcare, pollution, the electricity sector, and overall economic challenges. The protests come amid a prolonged Cabinet formation deadlock in Lebanon, contributing to concerns about the country's economic collapse.",
+  "locs": [
+   [
+    35.3714,
+    33.563
+   ],
+   [
+    35.4836,
+    33.3772
+   ],
+   [
+    35.6,
+    33.977
+   ],
+   [
+    35.597,
+    33.807
+   ],
+   [
+    36.206,
+    34.0047
+   ],
+   [
+    36.11,
+    34.53
+   ],
+   [
+    35.902,
+    33.8467
+   ],
+   [
+    35.8498,
+    34.4367
+   ],
+   [
+    35.5018,
+    33.8938
+   ]
+  ]
+ },
+ {
+  "id": "20190118",
+  "kind": "point",
+  "date": "2019-01-18",
+  "title": "Student protest calls for economic change",
+  "source": "Daily Star (Lebanon)",
+  "text": "University and youth union members gathered on the steps of the National Museum in Beirut to protest Lebanon's current economic situation, particularly its impact on the youth. Coordinated by the Lebanese Communist Party under the banner \"The National Student Movement,\" the protest involved 11 university societies and youth unions. Approximately 50 to 100 students participated, expressing concerns about the high cost of education and the limited job opportunities available to graduates. The protest emphasized economic issues facing the youth and was not directly related to government formation.",
+  "locs": [
+   [
+    35.5152,
+    33.8738
+   ]
+  ]
+ },
+ {
+  "id": "20190120",
+  "kind": "point",
+  "date": "2019-01-20",
+  "title": "Demonstrators decry worsening living conditions",
+  "source": "Daily Star (Lebanon)",
+  "text": "Hundreds of demonstrators, led by the Lebanese Communist Party, Popular Nasserite Organization, workers unions, and independent groups, marched to the Finance Ministry in Beirut to protest the state's economic policies and deteriorating living conditions in Lebanon. The protest aimed to establish a national movement against sectarian politicians, emphasizing economic grievances as a unifying factor. Organizers rejected rumored plans of the future government to increase the value-added tax and reduce gasoline subsidies, expressing discontent with Lebanon's economic challenges and political instability.",
+  "locs": [
+   [
+    35.5125,
+    33.8925
+   ]
+  ]
+ },
+ {
+  "id": "20190418",
+  "kind": "point",
+  "date": "2019-04-18",
+  "title": "Public sector workers strike against austerity",
+  "source": "Daily Star (Lebanon)",
+  "text": "Public institutions across Lebanon went on strike as hundreds of state workers gathered in Downtown Beirut to protest potential cuts to their wages and benefits aimed at reducing the budget deficit. The strike, organized by the General Confederation of Lebanese Workers, included participation from institutions like the state-run National News Agency and Radio Liban. The demonstrators, mainly public school teachers, expressed concerns about the impact on the public sector and called for a unified stance to protect their rights.",
+  "locs": [
+   [
+    35.5018,
+    33.8938
+   ],
+   [
+    36.11,
+    34.53
+   ],
+   [
+    35.8,
+    34.32
+   ],
+   [
+    35.4836,
+    33.3772
+   ]
+  ]
+ },
+ {
+  "id": "20190719",
+  "kind": "point",
+  "date": "2019-07-19",
+  "title": "Ogero workers protest proposed salary cuts — Politicians fumble, Lebanese lose faith",
+  "source": "Daily Star (Lebanon)",
+  "text": "Employees at Lebanon's state-run telecommunications company, Ogero, initiated a nationwide strike opposing proposed salary cuts outlined in the draft budget for the year. The strike, affecting various regions such as Baalbeck, Akkar, and Batroun, was in response to reductions in allocations for wages and salaries, as well as equipment and construction. Approximately 100 Ogero employees gathered in Beirut's Martyrs' Square, expressing their concerns about the economic challenges in Lebanon and the impact of salary reductions. Demonstrations continued for days. Broadcasting companies showed support by airing blanket footage.",
+  "locs": [
+   [
+    36.206,
+    34.0047
+   ],
+   [
+    36.11,
+    34.53
+   ],
+   [
+    35.658,
+    34.255
+   ],
+   [
+    35.5018,
+    33.8938
+   ]
+  ]
+ },
+ {
+  "id": "20190928",
+  "kind": "point",
+  "date": "2019-09-28",
+  "title": "Protesters block roads in multiple areas of Bekaa",
+  "source": "Daily Star (Lebanon)",
+  "text": "Protesters in the Bekaa Valley blocked roads in three areas, expressing discontent with the government's handling of the economic crisis and widespread corruption. The demonstrations aimed to draw attention to tough living conditions and a reluctance to address economic challenges. The Lebanese Army intervened to reopen blocked roads, reflecting tensions arising from the country's precarious economic situation.",
+  "locs": [
+   [
+    35.95,
+    33.85
+   ]
+  ]
+ },
+ {
+  "id": "20190930",
+  "kind": "point",
+  "date": "2019-09-30",
+  "title": "Protesters paralyze life in Beirut over economic woes",
+  "source": "Daily Star (Lebanon)",
+  "text": "Worsening economic conditions in Lebanon triggered protests as hundreds of people blocked main roads in Downtown Beirut and other cities. Protesters, mainly civil activists, clashed with riot police, expressing frustration with the political class's failure to address the economic crisis, burning tires and garbage bins. The demonstrations, reminiscent of past protests, reflected concerns about the devaluation of the Lebanese pound, dollar shortage, and potential price hikes. Interior Minister Raya El Hassan defended the right to demonstrate but criticized rioting. The protests occurred amid international pressure for economic reforms to unlock over $11 billion in aid pledged by donors.",
+  "locs": [
+   [
+    35.5018,
+    33.8938
+   ],
+   [
+    36.11,
+    34.53
+   ],
+   [
+    35.8,
+    34.32
+   ],
+   [
+    35.4836,
+    33.3772
+   ],
+   [
+    36.206,
+    34.0047
+   ],
+   [
+    35.3,
+    33.42
+   ],
+   [
+    35.56,
+    33.86
+   ],
+   [
+    35.8498,
+    34.4367
+   ],
+   [
+    35.95,
+    33.85
+   ],
+   [
+    35.3714,
+    33.563
+   ]
+  ]
+ },
+ {
+  "id": "20191011",
+  "kind": "point",
+  "date": "2019-10-11",
+  "title": "Businesses hold strike in protest against economic situation",
+  "source": "Daily Star (Lebanon)",
+  "text": "Several businesses across Lebanon closed for one hour Thursday in protest of the country's worsening economic situation.",
+  "locs": [
+   [
+    35.5018,
+    33.8938
+   ]
+  ]
+ },
+ {
+  "id": "20191017n",
+  "kind": "national",
+  "date": "2019-10-17",
+  "title": "Lebanon Roiled by Second Day of Protests as Frustration Over Chronic Corruption Boils Over",
+  "source": "New York Times",
+  "text": "October 17th marked the first day of the October Revolution, a massive and widespread protest movement that lasted for 11 weeks. The protest began in response to the continuing economic crisis, Lebanon's faltering currency, the rising costs of wheat and gas, and government tax proposals. In the first week, demonstrators from all religious backgrounds gathered in various cities, including Beirut, Tripoli, and Tyre, blocking roads, burning posters of politicians, and chanting slogans against the government. While the protests were mostly peaceful, some incidents of violence occurred, including clashes with riot police, and at least one person was wounded in Tripoli. The protests represented Lebanese unity and manifested a critique of the entire poltiical class. When Hariri proposed a budget and economic recovery plan, demonstrators expressed dissatisfaction and even traditional supporters voiced a lack of trust in political leaders' promises.",
+  "locs": []
+ },
+ {
+  "id": "20191021",
+  "kind": "point",
+  "date": "2019-10-21",
+  "title": "Women on front lines of protests in Downtown Beirut",
+  "source": "Daily Star (Lebanon)",
+  "text": "Amidst the protests in Lebanon, over 30 women formed a human wall at the front of a crowd in Beirut's Riad al-Solh Square, separating protesters from riot police and barbed wire. The women, inadvertently becoming peacekeepers, aimed to maintain a peaceful protest against poverty, corruption, and chaos. Women have played various roles in expressing their anger and frustration, from fighting and shouting revolutionary slogans to distributing sweets and setting up camping chairs. A photograph of a Lebanese woman karate-kicking an armed man has become an iconic image of the protests. Women's participation reflects diverse demands, including the fall of the government, the return of stolen public funds, nationality rights, and equal pay. The protests have seen increased participation each day, with women emphasizing their right to demand equal rights and playing a crucial role in shaping the movement.",
+  "locs": [
+   [
+    35.5085,
+    33.8958
+   ]
+  ]
+ },
+ {
+  "id": "20191024n",
+  "kind": "national",
+  "date": "2019-10-24",
+  "title": "Government seeks solutions as popular uprising enters second week",
+  "source": "Daily Star (Lebanon)",
+  "text": "In the second week of the October Revolution protests, hundreds of thousands of people across geographies continued calling for the resignation of the political elite. Lebanese banks remain closed for the seventh day, and major universities, including the American University of Beirut, announce indefinite closures. The demonstrations reached areas traditionally aligned with Hezbollah and Prime Minister Saad Hariri's support bases, with a significant number of protests outside Beirut. In the second week, Prime Minister Hariri resigned, creating a power vaccum. The protesters, refusing to soften their stance, continued demonstrations and roadblocks. Hariri's resignation deepens political uncertainty, with no clear alternative and the economy nearing collapse.",
+  "locs": []
+ },
+ {
+  "id": "20191102n",
+  "kind": "national",
+  "date": "2019-11-02",
+  "title": "Aoun to hold talks on new PM early next week",
+  "source": "Daily Star (Lebanon)",
+  "text": "In the third week of protests beginning on October 17th over economic conditions, corruption, and the sectarian political system, a power vaccum in the wake of Hariri's resignation persisted, and protestors across sectarian and geographic lines continued demanding change. Banks reopened and demonstrations continued.",
+  "locs": []
+ },
+ {
+  "id": "20191113n",
+  "kind": "national",
+  "date": "2019-11-13",
+  "title": "Rage as Aoun urges protesters to go home",
+  "source": "Daily Star (Lebanon)",
+  "text": "President Michel Aoun urges demonstrators to end their four-week-long demonstrations. Aoun hints at forming a government of technocrats and politicians to address corruption and economic challenges. Protesters respond by blocking roads in various cities, including Beirut, Sidon, Tripoli, and others. Aoun emphasizes the need for a united government, possibly \"techno-political,\" to address protesters' goals. He rejects the demand for a purely technocratic government, stating it can't outline the country's policies without political cover. Aoun defends Hezbollah's potential participation in the government, rejecting the protesters' slogan \"All of them means all of them.\" Notably, school students aged 12-18 actively participated in the protests.",
+  "locs": []
+ },
+ {
+  "id": "20191116n",
+  "kind": "national",
+  "date": "2019-11-16",
+  "title": "One month of protests",
+  "source": "Daily Star (Lebanon)",
+  "text": "First month of protests: Day 1-12: Protests erupt, government backtracks on taxes, clashes with police, destruction, and violence. Day 13: Hariri resigns; attacks on protesters; security forces struggle to maintain order. Day 16: Banks reopen. Day 18: \"Sunday of Unity\" with rallies supporting President Aoun. Day 20: Protesters storm Zaitunay Bay and block state institutions. Day 23: Human Rights Watch criticizes security forces; students paralyze state institutions. Day 27: President Aoun's comments reignite protests; protester shot and killed. Day 28: Armed men attack protesters; protester arrested and allegedly beaten. Day 29: Funeral of killed protester; Army opens most roads; arrests and beatings reported. Day 30: Protesters demand release of detainees; Army provides arrest details.",
+  "locs": []
+ },
+ {
+  "id": "20191130n",
+  "kind": "national",
+  "date": "2019-11-30",
+  "title": "Frustration returns to streets as fuel strike stalls cars",
+  "source": "Daily Star (Lebanon)",
+  "text": "Lebanese residents experience anger and frustration on the second day of a nationwide strike by gas station owners, leading to halted traffic. Gas stations close in protest of ongoing dollar shortages, prompting taxi drivers to block roads in Beirut and other areas. The impact of the strike is felt as drivers claim to be out of fuel, and the Lebanese Army intervenes to keep traffic flowing. Gas station owners demand the ability to buy fuel in Lebanese pounds and resist paying 15% of imports in dollars. Black-market fuel prices rise, and citizens resort to stockpiling fuel. Currency exchange shops defy a strike announcement related to the shortage of dollars. Citizens accuse currency exchangers of taking advantage of the economic situation. The day marks the 44th day of the national uprising that began on Oct. 17. Protesters gather in front of the Helou police station demanding the release of an arrested individual, and demonstrators gather outside the Finance Ministry's value-added tax building. Clashes occur in various regions as protesters use roadblocks and burning tires as a strategy throughout the uprising.",
+  "locs": []
+ },
+ {
+  "id": "20191223",
+  "kind": "point",
+  "date": "2019-12-23",
+  "title": "Christmas is coming, but Lebanon's crisis is relentless",
+  "source": "Daily Star (Lebanon)",
+  "text": "In contrast to the usual extravagant Christmas tree set up by the Beirut Municipality, this year, a \"revolution\" Christmas tree adorned with images and symbols from the ongoing protests in Lebanon was erected in Martyrs' Square. The economic and financial crisis has dampened the Christmas spirit, with nationwide protests reflecting the widespread dissatisfaction with economic conditions and allegations of corruption against the ruling class. Despite the challenging circumstances, various initiatives are being launched to support those in need during the holiday season. The atmosphere is different this year, and people are expressing solidarity and resilience in the face of adversity.",
+  "locs": [
+   [
+    35.5072,
+    33.8967
+   ]
+  ]
+ },
+ {
+  "id": "20200113n",
+  "kind": "national",
+  "date": "2020-01-13",
+  "title": "Protesters target dining, shopping politicians",
+  "source": "Daily Star (Lebanon)",
+  "text": "Protesters in Lebanon returned to the streets, marking the 88th day of nationwide anti-government protests, gathering outside Parliament and blocking the main \"Ring Bridge\" under the slogan \"The revolution is coming back.\" Despite decreased numbers, the protests have become more spontaneous and targeted, focusing on public figures. Caretaker Public Works Minister Youssef Fenianos faced protests and chants of \"revolution.\" Targeting MPs and ministers has become a tactic to express disapproval of the ruling class, as demonstrated by incidents involving MPs Sami Fatfat and Tarek Merehbi. Protests also took place in front of Telecoms Minister Mohammad Choucair's residence, condemning the \"illegal\" extension of contracts of state-run Telecom companies. The protests follow a gathering of around 2,000 protesters denouncing the deteriorating economy and living standards. Protests continued the following day, termed the \"Tuesday of Anger\" and involved violent clashes with riot police.",
+  "locs": []
+ },
+ {
+  "id": "20200125n",
+  "kind": "national",
+  "date": "2020-01-25",
+  "title": "Day 100 marked by attacks from Amal supporters",
+  "source": "Daily Star (Lebanon)",
+  "text": "Lebanon marked the 100th day of anti-government protests, but the occasion was marred by violent clashes between protesters and Amal Movement supporters.",
+  "locs": []
+ },
+ {
+  "id": "20200305",
+  "kind": "point",
+  "date": "2020-03-05",
+  "title": "Hundreds of protesters call for early elections",
+  "source": "Daily Star (Lebanon)",
+  "text": "Hundreds of protesters gathered in Antelias and Beirut's Hamra demanding early elections due to Lebanon's worsening economic situation. Protests intensified over the past week, leading to the closure of state institutions and roadblocks in various cities. Public pressure mounts for the government to present a viable economic rescue plan addressing Lebanon's high public debt, estimated at 155 percent of GDP by the IMF. The Lebanese pound has sharply devalued against the dollar.",
+  "locs": [
+   [
+    35.5018,
+    33.8938
+   ],
+   [
+    36.206,
+    34.0047
+   ],
+   [
+    35.3714,
+    33.563
+   ],
+   [
+    36.078,
+    34.544
+   ],
+   [
+    35.8498,
+    34.4367
+   ],
+   [
+    35.53,
+    33.857
+   ],
+   [
+    35.6,
+    33.977
+   ],
+   [
+    35.59,
+    33.915
+   ]
+  ]
+ },
+ {
   "id": "20200421",
   "kind": "point",
   "date": "2020-04-21",

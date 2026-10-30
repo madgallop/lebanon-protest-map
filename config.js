@@ -2,8 +2,6 @@ var config = {
     style: 'mapbox://styles/madgallop/clrmnixwt004j01nl2r52gj1g',
     accessToken: 'pk.eyJ1IjoibWFkZ2FsbG9wIiwiYSI6ImNtdnY5cjlidDA1MmkyeHBxY2JiZ2hmYzUifQ.O90_AOTJ6ofKXt4lix8JjA',
     showMarkers: false,
-    // After running the site with ?debug, put the ids of your tree/ring layers here, e.g. ['protest-trees', 'nationwide-rings']
-    clickableLayers: [],
     markerColor: '#3FB1CE',
     //projection: 'equirectangular',
     //Read more about available projections here
@@ -20,11 +18,11 @@ var config = {
     chapters: [
         {
             id: 'emerging-from-civil-war',
+            from: '1980-01-01', to: '1999-12-31', rings: true,
             alignment: 'left',
             hidden: false,
             title: 'Emerging from civil war',
-            description: "<p>Near the end of the civil war, Lebanon entered its worst economic depression since its independence 44 years prior. Deep religious divisions paralyzed the government as costs spiraled and acute shortages strained Lebanese society. The real value of wages plummeted, dropping by over 98% between 1975 and 1987, and inflation surpassed 250%. Essential goods became nearly ten times more expensive. Riots erupted over currency devaluation and inflation, and government subsidy cuts contributed to food insecurity. Prime Minister Karami resigned amid the economic protests. Political shifts and economic turmoil persisted until the turn of the century, leaving Lebanon in a fragile state.</p><p>On West Beirut&rsquo;s Corniche Mazraa in August 1987, marchers chanted <mark class='hl' data-place='5'>&ldquo;Down with the dollar! Down with imperialism!&rdquo;</mark></p><p><em>Click a cedar on the map to learn more about each protest.</em></p>",
-            places: [1, 2, 3, 4, 5, 6],
+            description: "<p>Near the end of the civil war, Lebanon entered its worst economic depression since its independence 44 years prior. Deep religious divisions paralyzed the government as costs spiraled and acute shortages strained Lebanese society. The real value of wages plummeted, dropping by over 98% between 1975 and 1987, and inflation surpassed 250%. Essential goods became nearly ten times more expensive. <mark class='hl' data-event='19870830'>Riots erupted over currency devaluation and inflation</mark>, and government subsidy cuts contributed to food insecurity. Prime Minister Karami resigned amid the economic protests. Political shifts and economic turmoil persisted until the turn of the century, leaving Lebanon in a fragile state.</p><p><em>Click a cedar on the map to read about each protest.</em></p>",
             location: {
                 center: [35.233333, 33.879786],
                 zoom: 8,
@@ -39,14 +37,15 @@ var config = {
         },
         {
             id: 'two-thousands-to-twenty-tens',
+            from: '2000-01-01', to: '2019-09-30', rings: true,
             alignment: 'right',
             hidden: false,
             title: '2000s-2010s',
             description: "<p>After a partial economic recovery, events such as the unfulfilled promise of Syrian troop withdrawal after the civil war, protests after Rafik Hariri's assassination, and localized economic challenges defined this period. From economic concerns in 2008 to specialized industry organizing in the 2010s to the 2015 trash crisis, grievances extended to tax policies, rising public debt, and government inefficacy. Amid political struggles, economic issues worsened. Banks threatened to halt public debt financing, and diverse industrial and social sectors advocated for change.</p>",
             location: {
-                center: [35.5018, 33.8938],
-                zoom: 10.5,
-                pitch: 30,
+                center: [35.75, 33.95],
+                zoom: 8.3,
+                pitch: 0,
                 bearing: 0
             },
             mapAnimation: 'flyTo',
@@ -57,6 +56,7 @@ var config = {
         },
         {
             id: 'october-2019-revolution',
+            from: '2019-10-01', to: '2020-03-31', rings: true,
             alignment: 'left',
             hidden: false,
             title: 'October 2019 Revolution',
@@ -75,15 +75,16 @@ var config = {
         },
         {
             id: 'covid-port-explosion-collapse',
+            from: '2020-04-01', to: '2030-12-31', rings: true,
             alignment: 'right',
             hidden: false,
             title: 'COVID-19, Port Explosion, and Economic Collapse',
-            description: "<p>In 2020, the October Revolution extended into the COVID-19 pandemic, exacerbating Lebanon's economic crisis. The port explosion in 2020 added to the challenges, rendering the economic crisis the most significant threat to stability since the 1975-90 civil war. The country witnessed a 50% depreciation of the Lebanese pound, an acute dollar shortage, and rampant inflation. The national debt reached 170% of GDP in 2019 and resulted in Lebanon's first sovereign default on its $1.2 billion Eurobond in March 2020. By 2022, 80% of the population faced poverty, and the Lebanese pound had depreciated over 98% against the US dollar since 2019. Food insecurity became a critical issue, with over 77% of Lebanese households unable to purchase sufficient food, highlighting the devastating impact of the economic crisis on the well-being of the people.</p>",
+            description: "<p>In 2020, the October Revolution extended into the COVID-19 pandemic, exacerbating Lebanon's economic crisis. The port explosion in 2020 added to the challenges, rendering the economic crisis the most significant threat to stability since the 1975-90 civil war. The country witnessed a 50% depreciation of the Lebanese pound, an acute dollar shortage, and rampant inflation. The national debt reached 170% of GDP in 2019 and resulted in Lebanon's first sovereign default on its $1.2 billion Eurobond in March 2020. By 2022, 80% of the population faced poverty, and the Lebanese pound had depreciated over 98% against the US dollar since 2019. Food insecurity became a critical issue, with over 77% of Lebanese households unable to purchase sufficient food, highlighting the devastating impact of the economic crisis on the well-being of the people.</p><p>In Sidon, marchers kept to the demands of the October uprising, chanting <mark class='hl' data-event='20200605'>&ldquo;Down with the corrupt system.&rdquo;</mark> On the anniversary of the port explosion, <mark class='hl' data-event='20210806'>protesters demanded accountability</mark> from those in power.</p>",
             location: {
-                center: [35.5186, 33.9015],
-                zoom: 13,
-                pitch: 45,
-                bearing: -20
+                center: [35.75, 33.9],
+                zoom: 8.4,
+                pitch: 25,
+                bearing: 0
             },
             mapAnimation: 'flyTo',
             rotateAnimation: false,
@@ -93,6 +94,7 @@ var config = {
         },
         {
             id: 'conclusion',
+            from: '1980-01-01', to: '2030-12-31', rings: false,
             alignment: 'center',
             hidden: false,
             description: "<p>Since the civil war, protests have erupted across various regions and sectarian lines, fueled by economic grievances, food insecurity, and a lack of effective governance. Despite the enduring influence of sectarianism in Lebanese society, the series of protest movements that have unfolded since 1987 underscores a growing unity among Lebanon's population. These demonstrations highlight a shared frustration that transcends religious and geographic divisions, posing a collective demand for change. Hopefully, Lebanon's political class can see past religious division and learn from its people to finally address the nation's challenges.</p>",

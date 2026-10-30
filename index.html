@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title>Mapbox Storytelling</title>
+    <title>Down with the Dollar! Mapping economic protests in Lebanon since 1987</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/mapbox/assembly/publisher-staging/src/svgs/mapbox.svg">
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js'></script>
@@ -192,6 +192,16 @@
             touch-action: unset;
         }
 
+        
+        .ev { padding: 8px 4px; border-top: 1px solid rgba(251,238,234,.3); }
+        .ev:first-child { border-top: 0; }
+        .ev .evt { font-style: italic; margin: 2px 0 0; }
+        .ev p { margin: 4px 0 0; }
+        .chips { padding: 0 50px 25px; }
+        .chips-label { font-size: 12px; margin-bottom: 6px; }
+        .chip { margin: 0 6px 6px 0; padding: 3px 8px; font: 12px 'Avenir', sans-serif; cursor: pointer;
+                background: transparent; color: var(--cream); border: 1px solid var(--cream); border-radius: 12px; }
+        .chip:hover, .chip.on { background: var(--hl); color: var(--red-deep); border-color: var(--hl); }
         </style>
 </head>
 <body>
@@ -201,142 +211,92 @@
 <div id="story"></div>
 
 <script src="./config.js"></script>
+<script src="./protests.js"></script>
 <script>
-var initLoad = true;
-var layerTypes = {
-    'fill': ['fill-opacity'],
-    'line': ['line-opacity'],
-    'circle': ['circle-opacity', 'circle-stroke-opacity'],
-    'symbol': ['icon-opacity', 'text-opacity'],
-    'raster': ['raster-opacity'],
-    'fill-extrusion': ['fill-extrusion-opacity'],
-    'heatmap': ['heatmap-opacity']
-}
+var CEDAR_SVG = '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="72" height="73" viewBox="0 0 600.2 611.6" style="enable-background:new 0 0 600.2 611.6;" xml:space="preserve" > <style type="text/css"> .st0{fill:#AA1823;} </style> <path class="st0" d="M257.3,539.1c-5-1.5-12.3-4.8-17.4-4.2c-19.8,2.2-31.2,20.1-47.9,29c-13.7,7.4-30.2,9.3-45.6,10.8 c-10.6,1-21.3,5.7-25.4,15.6c-0.1,0.4-0.4,0.6-0.7,0.8c-5.1,2.5-10.6-3.4-9.8-8.4c0.1-0.4,0.3-0.7,0.6-0.9 c7.7-5.9,15-10.2,24.6-13.9c12-4.7,22.2-7.6,33.3-16.2c19.6-15.1,32.9-33.8,43.8-55.8c3-6.1,4.8-11.2,5.3-15.3 c1.8-13.3-3.5-26.4-14.5-34.2c-10-7.1-21.5-7.8-34.4-2.1c-40,17.6-78.3,38.7-123.3,37.1c-8.4-0.3-17.1-5.4-10.8-15 c3.8-5.9,6.7-3.5,12-5.2c27.2-8.5,53.8-16.6,79.2-29.8c7.1-3.7,19.1-12.7,13.8-22.1c-3.8-6.7-12-9-19.2-7.9 c-2.3,0.4-5.6,1.7-9.7,3.9c-27.1,14.4-51.6,27.4-80.1,33.8c-5.9,1.3-28.5,6-25-7.9c0.1-0.3,0.3-0.6,0.5-0.8 c6.3-5.1,14.7-3.8,20.4-10c22.8-24.9,49-45.7,80.2-60.2c16.6-7.7,18.5-32.5-2.5-35.8c-4.4-0.7-11.2,4.1-15.6,7.2 c-6.3,4.5-12.2,8.1-17.7,10.8c-9.6,4.6-21.9,4.9-25.1-7.7c-0.4-1.5,0.8-3.3,2.1-4.3c8.8-7.2,17.2-15,25-23.2 c11.2-11.9,18.5-16.5,33.4-21.2c12.3-3.9,22.6-10.7,31-20.3c8.9-10.3,15.5-21.3,8.2-34.2c-13-23-46,14.9-54.1-6.1 c-1.9-5,1-8.2,5-11.3c15.5-11.5,29.1-18.2,44.9-25.8c8.7-4.2,15.4-10.3,20.2-18.3c3.3-5.5,5-8.3,5.1-8.5c3-3.8,14.5-13,19.8-9.8 c0.3,0.2,0.6,0.2,0.9,0.2c5.3-0.6,9.2-3.1,11.5-7.8c2.3-4.5,1.2-10.5-4.1-11.9c-5.1-1.4-15.8,0.7-15.7-7.4c0-0.3,0.1-0.6,0.3-0.8 c2.7-2.8,5.2-4.9,7.4-6.4c10.6-7.1,22.6-13.8,36-20.3c2.5-1.2,5.3-3.3,8.4-6.3c3.2-3.1,3-6.4-0.6-8.8c-4.1-2.8-8.2-3-12.3-0.5 c-0.3,0.2-0.6,0.1-0.9-0.1c-3.6-3.7,0.4-7.9,3.3-10.2c24.3-19.7,48-37.1,63-65.5c0.1-0.2,0.3-0.3,0.5-0.2c0.1,0,0.1,0.1,0.2,0.2 c12.8,32.7,29.1,55.5,66.2,61.3c24.4,3.8,42.3,16.7,61.8,30.5c3.7,2.6,10.1,4.4,12.8,7.8c2.3,2.9,3.1,10.2-1.4,11.9 c-3.6,1.3-8-2.8-12.3-1.8c-3.8,0.9-6.8,0.9-9.3,4.3c-0.2,0.3-0.3,0.6-0.3,0.9c0.1,1.7,0.8,3.1,2,4.1c4.3,3.6,9.2,7,14.1,10.9 c9.2,7.1,19.1,13,29.8,17.6c1.7,0.7,2.8,1.9,3.4,3.6c0.1,0.3,0.1,0.6,0,0.9c-1.1,2.4-3,3.6-5.7,3.4c-7.4-0.3-14.9-1.5-22.3-3.6 c-8-2.2-18.4-7.4-26.7-9.4c-4.3-1.1-8-0.3-11.2,2.4c-8.8,7.3,0,15.1,6.9,17.9c8.5,3.5,13,7.4,21.9,14.5 c20.4,16.5,39.8,33.3,61.9,47.6c8.3,5.4,17.1,9.7,26.4,12.9c5.8,2,12.3,10.5,6.7,16c-2.3,2.2-4.7,0.7-7.3,0.4 c-11.3-1.3-22.6-2.2-33.5-5.7c-3.5-1.1-6-1.6-7.7-1.5c-10.4,0.7-15.3,15-2.8,17.4c17.4,3.4,34.1,8.5,51.2,13.4 c5.7,1.6,17.5,2.8,21.7,8c1.6,2,1.7,5.5,0,7.7c-3.6,4.8-8.4,6.4-14.2,4.6c-1.7-0.5-3.2-0.8-4.5-0.7c-13.9,0.6-24.7,2.4-37.1,2.2 c-3.5-0.1-9.5-1-13.6-0.4c-7.2,1-10.9,8.8-8.2,15.2c0.1,0.3,0.4,0.5,0.8,0.5c7-0.2,13.8,0.3,20.5,1.5c11.1,2,20.8,8.8,29.1,16.3 c9.7,8.8,18.1,16.7,25.2,23.6c5.9,5.7,13.7,12.2,21.2,15.5c2.6,1.1,4.3,2.2,5.3,3.1c5.6,5.7,4.9,17-5.8,16.1 c-7.4-0.6-14.4-2.7-21.1-6.2c-7.9-4.1-17.6-12.9-30.7-11.9c-7.2,0.5-17.9,4.4-19.7,12.6c-1.5,6.7,1.5,11.6,7.3,15.1 c17.3,10.5,34.7,20.6,52.4,30.4c15.1,8.3,29.1,18.3,41.9,29.8c5.6,5,9,9.5,5.7,16.8c-2.2,4.9-7.3,7-12.4,5.1 c-15.7-6-26.5-14.6-44.1-26.5c-29.1-19.7-63.1-13.7-96.1-13.3c-19.8,0.2-34-9.3-51.3-16.9c-10.2-4.5-24.9,2.8-26.8,14.2 c-2.5,15.4-3.3,30.8-2.2,46.3c0.6,7.9,1.6,14.5,3.2,19.7c6.8,22.5,25.5,39,43.2,53.4c3.2,2.6,8.9,6.4,17,11.4 c4.8,2.9,8.5,10.9,4.4,15.8c-8.8,10.3-23.2-12.9-28.5-18c-7.7-7.4-15-10.5-26.1-12.3c-5.8-0.9-23-5.6-27.7-2.7 c-4.1,2.6-5.9,9.9-5,13.7c0.7,3.3-0.1,5.5-2.5,6.6c-0.3,0.2-0.7,0.2-1.1,0.1c-8.1-2.1-8.9-7.8-15.1-11.8 c-8.1-5.1-15.9-9.5-20.9-17.6c-0.1-0.2-0.9-2-2.4-5.5c-1.8-4.3-5-6.9-9.6-7.8c-1.5-0.3-4.5-0.4-9-0.1c-0.3,0-0.6,0.1-0.9,0.3 c-4.1,2.5-7.1,2.2-11.8,2.5C258.7,540.1,258.2,539.4,257.3,539.1z M218,134.7c4.2-0.1,7.6-4.1,7.6-9c-0.1-4.9-3.6-8.9-7.8-8.8l0,0 c-4.2,0.1-7.6,4.1-7.6,9C210.2,130.8,213.7,134.7,218,134.7z M319.6,143.9c4.1-1.6,6-6.7,4.2-11.3c0,0,0,0,0,0 c-1.8-4.6-6.6-7.1-10.7-5.5c0,0,0,0,0,0c-4.1,1.6-6,6.7-4.2,11.3c0,0,0,0,0,0C310.7,143.1,315.5,145.5,319.6,143.9 C319.6,143.9,319.6,143.9,319.6,143.9z M347,150.2c8.5,1.8,13-8.4,10.6-15.5c-3-8.6-16.7-4.9-18.5,2.2 C337.6,142.9,340.9,148.9,347,150.2z M262.7,152.3c5.8,3.5,15.8-1.1,22.2-2.8c2.8-0.7,4.8-1.7,6-2.8c4.4-4.3,4.2-12.3-0.9-16.1 c-3.1-2.3-10.4,1.1-13.8,2.2c-7.1,2.1-11.3,3.9-14.6,9.9C259.9,145.8,259.4,150.3,262.7,152.3z M214,170.9c-3,8.2,6.1,11,11.9,7.7 c4.5-2.5,8.8-5.1,13.2-7.9c7-4.5,9-14.1,3.9-20.9c-0.2-0.3-0.5-0.4-0.8-0.4C233.8,150.2,216.9,163,214,170.9z M315.8,208.2 c9.2,7.1,20.3-12.4,9.9-20.2c-0.6-0.4-1.3-0.5-2-0.1c-5.1,2.9-10,3-11.5,9.8C311.2,202.1,312.4,205.6,315.8,208.2z M278.7,203.7 c8.9,12.1,25-6.2,13.8-14.2c-0.3-0.2-0.6-0.3-0.9-0.2c-3.3,1-7.7,0.4-10.3,1.5C276.6,192.8,276.1,200.1,278.7,203.7z M350.9,220.7 c3.2,2.8,9.8,3.8,13.9,4.2c6.3,0.6,14.4-1.7,17.3-7.8c0.8-1.7,1.1-3.1,0.8-4.3c-2-10.3-9.8-15.7-19.9-14.6 c-5.4,0.6-12.6,2.5-15.5,7.2C344.4,210.2,346.7,217,350.9,220.7z M196.5,221.8c8,5.6,18.2-0.2,22.2-7.6c3.7-6.8-4.6-15.9-11.9-13.1 c-0.3,0.1-0.6,0.1-0.9,0.1C194.5,199.1,187.4,215.4,196.5,221.8z M161.4,232.9c4.9,4.2,9.5,7.5,16,5.1c4.2-1.6,10.4-6.5,8.4-11.5 c-3.9-9.8-11.7-18.6-23.2-18.8c-2.5,0-4.6,0.8-6.3,2.4C149.5,216.7,155.8,228.2,161.4,232.9z M403.5,246.7 c-20.5,7.8,2.1,31.1,13.9,18.8c4.7-4.9,3.7-12.3-0.9-16.9C412.6,244.9,408.3,244.9,403.5,246.7z M267.4,281.3 c3.6,0.7,7.2-2.3,8.1-6.6c0,0,0,0,0,0c0.9-4.4-1.3-8.5-4.9-9.2c0,0,0,0,0,0c-3.6-0.7-7.2,2.3-8.1,6.6l0,0 C261.6,276.4,263.8,280.5,267.4,281.3C267.4,281.3,267.4,281.3,267.4,281.3z M234.8,287.2c2.9-2.1,3-6.9,0.3-10.6 c-2.7-3.8-7.3-5.2-10.2-3.1c0,0,0,0,0,0c-2.9,2.1-3,6.9-0.3,10.6S231.9,289.3,234.8,287.2L234.8,287.2z M291.1,299 c3.6,8.6,15,7.8,20.3,1.8c0.2-0.3,0.4-0.7,0.3-1c-1.1-10.4-5.8-18.5-14.2-24.5c-0.3-0.2-0.5-0.2-0.8,0 C289,281.7,287.1,289.6,291.1,299z M323.3,304c2.8,0.3,5.4-2.6,5.8-6.4c0.4-3.9-1.5-7.2-4.3-7.6l0,0c-2.8-0.3-5.4,2.6-5.8,6.4 C318.7,300.3,320.6,303.7,323.3,304z M124.2,313.9c1.9,6.3,8,23.4,17.4,22.3c10.9-1.3,22.2-5.6,32.3-9.6 c10.6-4.2,13.3-16.6,0.6-20.3c-5.2-1.5-10.9-0.2-14.9-0.1c-5.8,0.2-11.6,0.7-17.4,1.4c-7,0.9-11.9,1-17.7,5.4 C124.2,313.3,124.1,313.6,124.2,313.9z M382.3,363.4c12.3,8.6,29.2,7,39.4-4c7.2-7.8-0.2-19.3-10.2-17.7c-10.6,1.7-31.5,6-29.7,20.9 C381.9,363,382,363.2,382.3,363.4z M442.2,380.8c11.1,7.1,25.2,3.5,32.4-7.3c6.5-9.7-3.7-23.9-14.9-18.8c-10.2,4.7-20,8-20.5,20.3 C439.1,377.6,440.1,379.4,442.2,380.8z M208.4,402.3c6.6,2.1,14.6-7.7,9.8-13.8c-0.2-0.2-0.3-0.5-0.3-0.8 c-0.3-10.2-5.4-16.3-15.2-18.3c-4.5-0.9-6.4,1.9-5.7,6.1C198.3,382.2,200.8,399.9,208.4,402.3z M275,392.6 c4.6,9.3,19.6,6.1,19.2-4.9c-0.3-8.6-9.9-15.1-18.1-12.8c-0.3,0.1-0.6,0.3-0.7,0.6C274,378.3,273.6,389.8,275,392.6z M238.5,383.3 c-0.1,8,4,17.5,12.9,18c0.6,0,1.2-0.3,1.5-0.9c4.5-8.9-3.4-18.8-12.6-18.9C239.2,381.4,238.5,382.1,238.5,383.3z"/> </svg>';
+var EV = PROTESTS;
+var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var alignments = { 'left': 'lefty', 'center': 'centered', 'right': 'righty', 'full': 'fully' };
+var RING_CENTER = [35.85, 33.88];
+var RING_TOP = {};
+var activeChapter = config.chapters[0];
 
-var alignments = {
-    'left': 'lefty',
-    'center': 'centered',
-    'right': 'righty',
-    'full': 'fully'
+function fmtDate(d) {
+    var p = d.split('-');
+    return p.length === 2 ? MONTHS[p[1] - 1] + ' ' + p[0] : MONTHS[p[1] - 1] + ' ' + (+p[2]) + ', ' + p[0];
 }
-
-function getLayerPaintType(layer) {
-    var layerType = map.getLayer(layer).type;
-    return layerTypes[layerType];
+function inRange(e, ch) { return e.date >= ch.from && e.date <= ch.to; }
+function eventHTML(e) {
+    return '<div class="ev"><strong>' + fmtDate(e.date) + '</strong> &middot; ' + e.source +
+        '<div class="evt" dir="auto">' + e.title + '</div><p dir="auto">' + e.text + '</p></div>';
 }
-
-function setLayerOpacity(layer) {
-    var paintProps = getLayerPaintType(layer.layer);
-    paintProps.forEach(function(prop) {
-        var options = {};
-        if (layer.duration) {
-            var transitionProp = prop + "-transition";
-            options = { "duration": layer.duration };
-            map.setPaintProperty(layer.layer, transitionProp, options);
-        }
-        map.setPaintProperty(layer.layer, prop, layer.opacity, options);
+function nationalFor(ch) {
+    return EV.filter(e => e.kind === 'national' && inRange(e, ch));
+}
+function pointsFor(ch) {
+    var f = [];
+    EV.forEach(e => {
+        if (e.kind !== 'point' || !inRange(e, ch)) return;
+        e.locs.forEach(l => f.push({ type: 'Feature', properties: { eid: e.id }, geometry: { type: 'Point', coordinates: l } }));
     });
+    return { type: 'FeatureCollection', features: f };
+}
+// nationwide protests are drawn as nested rings over the whole country (oldest = smallest)
+function ringsFor(ch) {
+    var nat = ch.rings ? nationalFor(ch) : [], f = [];
+    RING_TOP = {};
+    nat.forEach((e, i) => {
+        var rx = nat.length === 1 ? 0.27 : 0.12 + 0.30 * i / (nat.length - 1), ry = rx * 1.8, c = [];
+        for (var a = 0; a <= 72; a++) {
+            var t = a / 72 * 2 * Math.PI;
+            c.push([RING_CENTER[0] + rx * Math.cos(t), RING_CENTER[1] + ry * Math.sin(t)]);
+        }
+        RING_TOP[e.id] = [RING_CENTER[0], RING_CENTER[1] + ry];
+        f.push({ type: 'Feature', properties: { eid: e.id }, geometry: { type: 'LineString', coordinates: c } });
+    });
+    return { type: 'FeatureCollection', features: f };
 }
 
-
+// ---------- build the story ----------
 var story = document.getElementById('story');
 var features = document.createElement('div');
 features.setAttribute('id', 'features');
-
 var header = document.createElement('div');
 var exposition = document.createElement('div');
-
-
-if (config.title) {
-    var titleText = document.createElement('h1');
-    titleText.innerText = config.title;
-    header.appendChild(titleText);
-}
-
-if (config.subtitle) {
-    var subtitleText = document.createElement('h2');
-    subtitleText.innerText = config.subtitle;
-    header.appendChild(subtitleText);
-}
-
-if (config.byline) {
-    var bylineText = document.createElement('p');
-    bylineText.innerHTML = config.byline;
-    header.appendChild(bylineText);
-}
-
-if (config.introduction) {
-    var introText = document.createElement('p');
-    introText.innerText = config.introduction;
-    exposition.appendChild(introText);
-}
-
-if (header.innerText.length > 0) {
-    header.classList.add(config.theme);
-    header.setAttribute('id', 'header');
-    story.appendChild(header);
-}
-
-if (exposition.innerText.length > 0) {
-    exposition.classList.add(config.theme);
-    exposition.setAttribute('id', 'exposition');
-    story.appendChild(exposition);
-}
+if (config.title) { var h1 = document.createElement('h1'); h1.innerText = config.title; header.appendChild(h1); }
+if (config.subtitle) { var h2 = document.createElement('h2'); h2.innerText = config.subtitle; header.appendChild(h2); }
+if (config.byline) { var by = document.createElement('p'); by.innerHTML = config.byline; header.appendChild(by); }
+if (config.introduction) { var intro = document.createElement('p'); intro.innerText = config.introduction; exposition.appendChild(intro); }
+if (header.innerText.length > 0) { header.classList.add(config.theme); header.setAttribute('id', 'header'); story.appendChild(header); }
+if (exposition.innerText.length > 0) { exposition.classList.add(config.theme); exposition.setAttribute('id', 'exposition'); story.appendChild(exposition); }
 
 config.chapters.forEach((record, idx) => {
     var container = document.createElement('div');
     var chapter = document.createElement('div');
-
-    if (record.title) {
-        var title = document.createElement('h3');
-        title.innerText = record.title;
-        chapter.appendChild(title);
+    if (record.title) { var t = document.createElement('h3'); t.innerText = record.title; chapter.appendChild(t); }
+    if (record.description) { var d = document.createElement('div'); d.innerHTML = record.description; chapter.appendChild(d); }
+    // chips: one button per nationwide protest in this chapter
+    var nat = record.rings ? nationalFor(record) : [];
+    if (nat.length) {
+        var chips = document.createElement('div');
+        chips.className = 'chips';
+        chips.innerHTML = '<div class="chips-label">Nationwide protests (the rings on the map). Click one to read about it:</div>';
+        nat.forEach(e => {
+            var b = document.createElement('button');
+            b.className = 'chip'; b.innerText = fmtDate(e.date); b.title = e.title;
+            b.addEventListener('click', () => selectNational(e.id, b));
+            chips.appendChild(b);
+        });
+        chapter.appendChild(chips);
     }
-
-    // if (record.image) {
-    //     var image = new Image();
-    //     image.src = record.image;
-    //     chapter.appendChild(image);
-    // }
-
-    if (record.description) {
-        var desc = document.createElement('div');
-        desc.innerHTML = record.description;
-        chapter.appendChild(desc);
-    }
-
     container.setAttribute('id', record.id);
     container.classList.add('step');
-    if (idx === 0) {
-        container.classList.add('active');
-    }
-
+    if (idx === 0) container.classList.add('active');
     chapter.classList.add(config.theme);
     container.appendChild(chapter);
     container.classList.add(alignments[record.alignment] || 'centered');
-    if (record.hidden) {
-        container.classList.add('hidden');
-    }
     features.appendChild(container);
-    
-    // Only chapters with mapped protest locations get a button
-    if (record.places && record.places.length > 0) {
-        const chapterButtonDiv = document.createElement('div');
-        const chapterButton = document.createElement('button');
-        chapterButton.innerText = 'Show protest locations';
-        chapterButton.classList.add('chapter-button');
-
-        chapterButtonDiv.appendChild(chapterButton);
-        container.appendChild(chapterButtonDiv);
-
-        chapterButton.addEventListener('click', () => {
-            displayMarkersForChapter(record);
-        });
-    }
 });
-
-
-
 story.appendChild(features);
 
 if (config.footer) {
@@ -347,16 +307,8 @@ if (config.footer) {
     story.appendChild(footer);
 }
 
+// ---------- map ----------
 mapboxgl.accessToken = config.accessToken;
-
-const transformRequest = (url) => {
-    const hasQuery = url.indexOf("?") !== -1;
-    const suffix = hasQuery ? "&pluginName=scrollytellingV2" : "?pluginName=scrollytellingV2";
-    return {
-      url: url + suffix
-    }
-}
-
 var map = new mapboxgl.Map({
     container: 'map',
     style: config.style,
@@ -364,301 +316,98 @@ var map = new mapboxgl.Map({
     zoom: config.chapters[0].location.zoom,
     bearing: config.chapters[0].location.bearing,
     pitch: config.chapters[0].location.pitch,
-    interactive: true,
-    transformRequest: transformRequest,
-    projection: config.projection
+    interactive: true
 });
-
-if (config.showMarkers) {
-    var marker = new mapboxgl.Marker({ color: config.markerColor });
-    marker.setLngLat(config.chapters[0].location.center).addTo(map);
-}
-
-// The story is scroll-driven, so turn off direct map navigation
-// (but keep click events working for the popups)
-['scrollZoom', 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate'].forEach(function(h) {
-    if (map[h]) map[h].disable();
-});
-
-// instantiate the scrollama
+// the story is scroll-driven: switch off direct navigation but keep clicks working
+['scrollZoom', 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate'].forEach(h => { if (map[h]) map[h].disable(); });
 var scroller = scrollama();
 
-const placesData = {
-    'type': 'FeatureCollection',
-    'features': [
-    {
-        "type": "Feature",
-        "id": 1,
-        "properties": {
-            "description": "<strong>Sidon, August 1987</strong><p><a href=\"https://www.nytimes.com/1987/08/30/world/lebanon-food-protests-spread.html\" target=\"_blank\">Marchers</a>  in the southern town of Sidon today chanted, We are hungry! We want to eat! The protests were peaceful, and shops remained closed for the day</p>",
-            "icon": "border-dot-13"
-        },
-        "geometry": {
-            "type": "Point",
-            "coordinates": [
-                35.37106,
-                33.554709
-            ]
-        }
-    },
-    {
-        "type": "Feature",
-        "id": 2,
-        "properties": {
-            "description": "<strong>Rasheiye, August 1987</strong><p><a href=\"https://www.nytimes.com/1987/08/30/world/lebanon-food-protests-spread.html\" target=\"_blank\">The police reported</a> protest marches in Rasheiye, but said the demonstrators dispersed peacefully.</p>",
-            "icon": "border-dot-13"
-        },
-        "geometry": {
-            "type": "Point",
-            "coordinates": [
-                35.83333,
-                33.507664636
-            ]
-        }
-    },
-    {
-        "type": "Feature",
-        "id": 3,
-        "properties": {
-            "description": "<strong>West Beirut, August 1987</strong><p><a href=\"https://www.nytimes.com/1987/08/30/world/lebanon-food-protests-spread.html\" target=\"_blank\">Protests</a> over food prices spread today from the capital to other Lebanese towns as steel-helmeted Syrian soldiers with heavy machine guns continued to patrol the main shopping centers in mainly Moslem West Beirut to prevent further disturbances.</p>",
-            "icon": "border-dot-13"
-        },
-        "geometry": {
-            "type": "Point",
-            "coordinates": [
-                35.481899,
-                33.897288
-            ]
-        }
-    },
-    {
-        "type": "Feature",
-        "id": 4,
-        "properties": {
-            "description": "<strong>The Highway to Beirut Airport, August 1987</strong><p><a href=\"https://www.latimes.com/archives/la-xpm-1987-08-29-mn-1369-story.html\" target=\"_blank\">Men carrying automatic rifles</a> and rocket-propelled grenades joined other rioters in setting tires ablaze on the highway to Beirut airport, blocking traffic for four hours. Holding their weapons high, the gunmen shouted: Death to America! Death to France! Death to Israel! Some rioters waved posters of Shia militia chieftain Nabih Berri and the Ayatollah Ruhollah Khomeini, Iran’s revolutionary patriarch. They stoned the few motorists who braved the blazing barriers on the airport highway.</p>",
-            "icon": "border-dot-13"
-        },
-        "geometry": {
-            "type": "Point",
-            "coordinates": [
-                35.494157,
-                33.864615
-            ]
-        }
-    },
-    {
-        "type": "Feature",
-        "id": 5,
-        "properties": {
-            "description": "<strong>Corniche Mazraa, August 1987</strong><p><a href=\"https://www.latimes.com/archives/la-xpm-1987-08-29-mn-1369-story.html\" target=\"_blank\">Protestors</a> marched down West Beirut’s Corniche Mazraa commercial thoroughfare chanting slogans. “We want food! We want medicine! We want fuel!” they shouted. Heavily armed Syrian soldiers surrounded the marchers as they chanted: “Down with the dollar! Down with imperialism!”</p>",
-            "icon": "border-dot-13"
-        },
-        "geometry": {
-            "type": "Point",
-            "coordinates": [
-                35.47958,
-                33.88347
-            ]
-        }
-    },
-    {
-        "type": "Feature",
-        "id": 6,
-        "properties": {
-            "description": "<strong>West Beirut, August 1987</strong><p><a href=\"https://www.nytimes.com/1987/08/30/world/lebanon-food-protests-spread.html\" target=\"_blank\">In West Beirut,</a>\"In Muslim West Beirut, Syrian commandos fired automatic rifles in the air to disperse about 30 rioters who tried to block traffic with burning tires. Shops, banks and restaurants on the avenue closed for the day. Money changers throughout West Beirut shut their booths to escape the wrath of rioters, who smashed the glass fronts of several money exchanges Thursday in the Hamra district.\"</p>",
-            "icon": "border-dot-13"
-        },
-        "geometry": {
-            "type": "Point",
-            "coordinates": [
-                35.4835,
-                33.8955
-            ]
-        }
-    }
-]
-};
-
 function removePopups() {
-    const popUps = document.getElementsByClassName('mapboxgl-popup');
-    while (popUps[0]) {
-        popUps[0].remove();
-    }
+    var p = document.getElementsByClassName('mapboxgl-popup');
+    while (p[0]) p[0].remove();
 }
-
-// Show popups for the places listed in a chapter's `places` array (feature ids)
-function displayMarkersForChapter(chapter) {
+function showEvents(ids, lngLat) {
+    var evs = EV.filter(e => ids.indexOf(e.id) !== -1);
+    if (!evs.length) return;
     removePopups();
-    placesData.features
-        .filter(place => (chapter.places || []).includes(place.id))
-        .forEach(createPopUp);
+    new mapboxgl.Popup({ closeOnClick: true, maxWidth: '280px' }).setLngLat(lngLat)
+        .setHTML('<div class="popup-text">' + evs.map(eventHTML).join('') + '</div>').addTo(map);
 }
-
-function createPopUp(currentFeature) {
-    new mapboxgl.Popup({ closeOnClick: true, maxWidth: '260px' })
-        .setLngLat(currentFeature.geometry.coordinates.slice())
-        .setHTML('<div class="popup-text">' + currentFeature.properties.description + '</div>')
-        .addTo(map);
+function highlightRing(id) {
+    if (map.getLayer('rings-hl')) map.setFilter('rings-hl', ['==', ['get', 'eid'], id || '']);
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
 }
-
-// ---- time-scrolling: each chapter lists the dot ids ("places") that belong to it ----
-var activePlaces = config.chapters[0].places || [];
-function placesFilter(ids) { return ['in', ['id'], ['literal', ids]]; }
-function applyPlacesFilter() {
-    if (map.getLayer('places')) map.setFilter('places', placesFilter(activePlaces));
+function selectNational(id, chip) {
+    highlightRing(id);
+    if (chip) chip.classList.add('on');
+    showEvents([id], RING_TOP[id] || RING_CENTER);
 }
-
-// ---- click handling: any feature on the map (dots, trees, rings from the Mapbox style) ----
-var DEBUG = /[?&]debug/.test(location.search);
-function featurePopupHTML(props) {
-    if (props.description) return props.description;
-    var title = props.title || props.name || props.Name || '';
-    var lines = Object.keys(props).filter(k => props[k] !== null && props[k] !== '' && k !== 'title' && k !== 'name' && k !== 'Name')
-        .map(k => '<br><strong>' + k + ':</strong> ' + props[k]);
-    return (title ? '<strong>' + title + '</strong>' : '') + lines.join('');
-}
-map.on('click', (e) => {
-    // pad the click so thin rings and small trees are easy to hit
-    var pad = 10;
-    var box = [[e.point.x - pad, e.point.y - pad], [e.point.x + pad, e.point.y + pad]];
-    if (DEBUG) {
-        var all = map.queryRenderedFeatures(box).filter(f => !/^(road|bridge|tunnel|land|water|admin|building|settlement|state|country|continent|waterway|natural|poi|transit|airport|ferry|aeroway|turning|golf|pitch|park|national|hillshade|contour|background)/.test(f.layer.id));
-        var txt = all.slice(0, 6).map(f => 'LAYER: ' + f.layer.id + ' | SOURCE-LAYER: ' + (f.sourceLayer || '') + '\n' + JSON.stringify(f.properties)).join('\n\n');
-        console.log(txt);
-        new mapboxgl.Popup({ maxWidth: '340px' }).setLngLat(e.lngLat)
-            .setHTML('<pre style="white-space:pre-wrap;font:11px/14px monospace;padding:8px;margin:0;max-height:220px;overflow:auto">' + (txt || 'no custom features here').replace(/</g, '&lt;') + '</pre>').addTo(map);
-        return;
+function openEvent(id) {
+    var e = EV.find(x => x.id === id);
+    if (!e) return;
+    if (e.kind === 'national') {
+        var chip = Array.prototype.find.call(document.querySelectorAll('.chip'), c => c.title === e.title);
+        selectNational(id, chip);
+    } else if (e.locs.length) {
+        map.flyTo({ center: e.locs[0], zoom: Math.max(map.getZoom(), 9.5), speed: 0.8 });
+        map.once('moveend', () => showEvents([id], e.locs[0]));
     }
-    var layers = ['places'].concat(config.clickableLayers || []).filter(id => map.getLayer(id));
+}
+
+map.on('click', e => {
+    var pad = 8;
+    var box = [[e.point.x - pad, e.point.y - pad], [e.point.x + pad, e.point.y + pad]];
+    var layers = ['places', 'rings'].filter(l => map.getLayer(l));
     var hits = map.queryRenderedFeatures(box, { layers: layers });
     if (!hits.length) return;
-    removePopups();
-    var f = hits[0];
-    if (f.layer.id === 'places') { createPopUp(f); return; }
-    new mapboxgl.Popup({ closeOnClick: true, maxWidth: '260px' })
-        .setLngLat(e.lngLat)
-        .setHTML('<div class="popup-text">' + featurePopupHTML(f.properties) + '</div>')
-        .addTo(map);
+    var ids = [];
+    hits.forEach(f => { if (ids.indexOf(f.properties.eid) === -1) ids.push(f.properties.eid); });
+    var ringHit = hits.find(f => f.layer.id === 'rings');
+    var pointHit = hits.find(f => f.layer.id === 'places');
+    highlightRing(!pointHit && ringHit ? ringHit.properties.eid : '');
+    showEvents(ids, pointHit ? e.lngLat : e.lngLat);
+});
+document.addEventListener('click', ev => {
+    var m = ev.target.closest && ev.target.closest('mark.hl[data-event]');
+    if (m) openEvent(m.getAttribute('data-event'));
 });
 
-// ---- highlighted words in the story: click one to jump to its protest ----
-document.addEventListener('click', function(ev) {
-    var m = ev.target.closest && ev.target.closest('mark.hl[data-place]');
-    if (!m) return;
-    var f = placesData.features.find(x => x.id === Number(m.getAttribute('data-place')));
-    if (!f) return;
-    removePopups();
-    map.flyTo({ center: f.geometry.coordinates, zoom: 11.5, speed: 0.8 });
-    map.once('moveend', function() { createPopUp(f); });
-});
+map.on('load', function() {
+    map.addSource('places', { type: 'geojson', data: pointsFor(activeChapter) });
+    map.addSource('rings', { type: 'geojson', data: ringsFor(activeChapter) });
+    map.addLayer({ id: 'rings-casing', type: 'line', source: 'rings', paint: { 'line-color': '#fbeeea', 'line-width': 4.5, 'line-opacity': 0.75 } });
+    map.addLayer({ id: 'rings', type: 'line', source: 'rings', paint: { 'line-color': '#AA1823', 'line-width': 2 } });
+    map.addLayer({ id: 'rings-hl', type: 'line', source: 'rings', filter: ['==', ['get', 'eid'], ''], paint: { 'line-color': '#f4d9a6', 'line-width': 6 } });
 
-// ---- debug helper: add ?debug to the URL to list the custom layers in your Mapbox style ----
-map.once('idle', function() {
-    if (!DEBUG) return;
-    var skip = ['landuse','landuse_overlay','landcover','waterway','water','aeroway','structure','road','admin','building','natural_label','poi_label','airport_label','transit_stop_label','place_label','housenum_label','motorway_junction','hillshade','contour'];
-    var lines = map.getStyle().layers
-        .filter(l => !(l['source-layer'] && skip.indexOf(l['source-layer']) !== -1) && l.type !== 'background' && l.id !== 'places' && l.type !== 'sky')
-        .map(l => l.id + ' | ' + l.type + ' | ' + l.source + (l['source-layer'] ? ' | ' + l['source-layer'] : ''));
-    var box = document.createElement('textarea');
-    box.id = 'debugbox';
-    box.value = 'CUSTOM LAYERS IN STYLE (copy all of this):\n' + lines.join('\n');
-    document.body.appendChild(box);
-});
+    var img = new Image(72, 73);
+    img.onload = function() {
+        if (!map.hasImage('cedar')) map.addImage('cedar', img, { pixelRatio: 2 });
+        map.addLayer({ id: 'places', type: 'symbol', source: 'places',
+            layout: { 'icon-image': 'cedar', 'icon-size': 0.8, 'icon-allow-overlap': true } });
+        map.on('mouseenter', 'places', () => { map.getCanvas().style.cursor = 'pointer'; });
+        map.on('mouseleave', 'places', () => { map.getCanvas().style.cursor = ''; });
+        map.on('mouseenter', 'rings', () => { map.getCanvas().style.cursor = 'pointer'; });
+        map.on('mouseleave', 'rings', () => { map.getCanvas().style.cursor = ''; });
+    };
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(CEDAR_SVG);
 
-map.on("load", function() {
-    map.addSource('places', { 'type': 'geojson', 'data': placesData });
-        // Lebanese cedar icon, drawn as an inline SVG (no extra file needed)
-        var cedarSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">' +
-            '<rect x="28" y="40" width="8" height="19" rx="2" fill="#4a1014" stroke="#fbeeea" stroke-width="1.5"/>' +
-            '<ellipse cx="32" cy="42" rx="26" ry="7" fill="#6b1a1f" stroke="#fbeeea" stroke-width="2"/>' +
-            '<ellipse cx="32" cy="30" rx="20" ry="7" fill="#6b1a1f" stroke="#fbeeea" stroke-width="2"/>' +
-            '<ellipse cx="32" cy="19" rx="13" ry="6" fill="#6b1a1f" stroke="#fbeeea" stroke-width="2"/>' +
-            '<ellipse cx="32" cy="10" rx="7" ry="4.5" fill="#6b1a1f" stroke="#fbeeea" stroke-width="2"/>' +
-            '</svg>';
-        var cedarImg = new Image(64, 64);
-        cedarImg.onload = function() {
-            if (!map.hasImage('cedar')) map.addImage('cedar', cedarImg, { pixelRatio: 2 });
-            map.addLayer({
-                'id': 'places',
-                'type': 'symbol',
-                'source': 'places',
-                'layout': {
-                    'icon-image': 'cedar',
-                    'icon-size': 1,
-                    'icon-allow-overlap': true
-                },
-                'filter': placesFilter(activePlaces)
-            });
-            map.on('mouseenter', 'places', () => { map.getCanvas().style.cursor = 'pointer'; });
-            map.on('mouseleave', 'places', () => { map.getCanvas().style.cursor = ''; });
-        };
-        cedarImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(cedarSVG);
-
-    // setup the instance, pass callback functions
-    scroller
-    .setup({
-        step: '.step',
-        offset: 0.5,
-        progress: true
-    })
-    .onStepEnter(async response => {
-        var current_chapter = config.chapters.findIndex(chap => chap.id === response.element.id);
-        var chapter = config.chapters[current_chapter];
-        
+    scroller.setup({ step: '.step', offset: 0.5, progress: true })
+    .onStepEnter(response => {
+        var chapter = config.chapters.find(c => c.id === response.element.id);
+        activeChapter = chapter;
         response.element.classList.add('active');
         map[chapter.mapAnimation || 'flyTo'](chapter.location);
-
-        // time-scrolling: show only the protests that belong to this chapter
-        activePlaces = chapter.places || [];
-        applyPlacesFilter();
-
-
-        if (chapter.onChapterEnter.length > 0) {
-            chapter.onChapterEnter.forEach(setLayerOpacity);
-        }
-        if (chapter.callback) {
-            window[chapter.callback]();
-        }
-        if (chapter.rotateAnimation) {
-            map.once('moveend', () => {
-                const rotateNumber = map.getBearing();
-                map.rotateTo(rotateNumber + 180, {
-                    duration: 30000, easing: function (t) {
-                        return t;
-                    }
-                });
-            });
-        }
-        if (config.auto) {
-             var next_chapter = (current_chapter + 1) % config.chapters.length;
-             map.once('moveend', () => {
-                 document.querySelectorAll('[data-scrollama-index="' + next_chapter.toString() + '"]')[0].scrollIntoView();
-             });
-        }
+        // time-scrolling: show only the protests from this chapter's years
+        map.getSource('places').setData(pointsFor(chapter));
+        map.getSource('rings').setData(ringsFor(chapter));
+        highlightRing('');
+        removePopups();
     })
     .onStepExit(response => {
-        const popUps = document.getElementsByClassName('mapboxgl-popup');
-        while (popUps[0]) {
-            popUps[0].remove();
-        }
-        var chapter = config.chapters.find(chap => chap.id === response.element.id);
         response.element.classList.remove('active');
-        if (chapter.onChapterExit.length > 0) {
-            chapter.onChapterExit.forEach(setLayerOpacity);
-        }
     });
-
-
-    if (config.auto) {
-        document.querySelectorAll('[data-scrollama-index="0"]')[0].scrollIntoView();
-    }
 });
-
-
-// setup resize event
 window.addEventListener('resize', scroller.resize);
-
 </script>
-
 </body>
 </html>
